@@ -324,6 +324,16 @@ ifneq (,$(user_variant))
       endif
     endif
   endif
+  
+  # Dalvik isn't built for non-Linux hosts).
+  # ALL-ODEX for building userdebugs
+  ifneq (true,$(DISABLE_DEXPREOPT))
+    ifeq ($(user_variant),userdebug)
+      ifeq ($(HOST_OS),linux)
+        WITH_DEXPREOPT := true
+      endif
+    endif
+  endif
 
   # Disallow mock locations by default for user builds
   ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=0
